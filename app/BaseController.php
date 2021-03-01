@@ -4,7 +4,11 @@ declare (strict_types = 1);
 namespace app;
 
 use think\App;
+use think\exception\HttpResponseException;
 use think\exception\ValidateException;
+use think\facade\Cookie;
+use think\facade\Session;
+use think\Response;
 use think\Validate;
 
 /**
@@ -45,9 +49,16 @@ abstract class BaseController
     {
         $this->app     = $app;
         $this->request = $this->app->request;
-
         // 控制器初始化
         $this->initialize();
+        if(!Session::has('blog_admin') && !Cookie::has('blog_admin')){
+
+            throw new HttpResponseException(Response::create(url('auth/data_center_login'),'redirect',302));
+
+        }
+        if(!$session = Session::get('dataCenter_admin') && Cookie::get('blog_admin')){
+            Session::set('blog_admin',$session);
+        }
     }
 
     // 初始化

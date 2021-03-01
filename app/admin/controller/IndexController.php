@@ -5,7 +5,7 @@ namespace app\admin\controller;
 
 use app\BaseController;
 
-class Index extends BaseController
+class IndexController extends BaseController
 {
     public function index()
     {
